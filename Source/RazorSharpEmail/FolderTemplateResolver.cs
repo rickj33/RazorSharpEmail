@@ -14,7 +14,7 @@ namespace RazorSharpEmail {
         /// </summary>
         /// <param name="rootFolder">The assembly where the templates are embedded.</param>
         public FolderTemplateResolver(string rootFolder = null) {
-            _rootFolder = rootFolder ?? AppDomain.CurrentDomain.BaseDirectory;
+            _rootFolder = rootFolder != null ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, rootFolder) : AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public string Resolve(string name) {

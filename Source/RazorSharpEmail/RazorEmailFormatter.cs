@@ -58,9 +58,9 @@ namespace RazorSharpEmail {
             if (language.Length > 0)
                 templateName = "{0}.{1}".FormatWith(language, templateName);
 
-            var subjectTemplate = _templateService.Resolve("{0}.Subject.cshtml".FormatWith(templateName), model);
-            var plainTextBodyTemplate = _templateService.Resolve("{0}.PlainText.cshtml".FormatWith(templateName), model);
-            var htmlBodyTemplate = _templateService.Resolve("{0}.Html.cshtml".FormatWith(templateName), model);
+            var subjectTemplate = _templateService.Resolve("{0}\\Subject.cshtml".FormatWith(templateName), model);
+            var plainTextBodyTemplate = _templateService.Resolve("{0}\\PlainText.cshtml".FormatWith(templateName), model);
+            var htmlBodyTemplate = _templateService.Resolve("{0}\\Html.cshtml".FormatWith(templateName), model);
 
             templatedEmail.Subject = HttpUtility.HtmlDecode(_templateService.Run(subjectTemplate, null)).RemoveLineFeeds();
             dynamic viewBag = new DynamicViewBag();
