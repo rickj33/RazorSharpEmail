@@ -1,0 +1,8 @@
+@using Email.Models
+@inherits RazorSharpEmail.EmailTemplate<ForgotPassword>
+@{
+    Layout = "_Layout.PlainText.cshtml";
+}
+@Model.FirstName Forgot Password
+
+@Model.ResetPasswordUrl

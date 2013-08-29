@@ -1,0 +1,10 @@
+@using Email.Models
+@inherits RazorSharpEmail.EmailTemplate<Welcome>
+@{
+    Layout = "_Layout.PlainText.cshtml";
+}
+Welcome (en-AU) @Model.FirstName!
+
+@Model.Message
+
+@Model.Url

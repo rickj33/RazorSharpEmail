@@ -4,14 +4,14 @@ namespace RazorSharpEmail.Tests
 {
     public static class Given
     {
-    	private static IEmailFormatter _initializedEmailFormatter;
+    	private static IEmailGenerator _initializedEmailGenerator;
 
-        public static IEmailFormatter AnInitializedEmailFormatter()
+        public static IEmailGenerator AnInitializedEmailFormatter()
         {
-			if (_initializedEmailFormatter == null)
-                _initializedEmailFormatter = new RazorEmailFormatter(typeof(SimpleEmail));
+			if (_initializedEmailGenerator == null)
+                _initializedEmailGenerator = new RazorEmailGenerator(typeof(Welcome));
 
-            return _initializedEmailFormatter;
+            return _initializedEmailGenerator;
         }
     }
 }

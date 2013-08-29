@@ -6,14 +6,14 @@ using RazorEngine.Configuration;
 using RazorEngine.Templating;
 
 namespace RazorSharpEmail {
-    public class RazorEmailFormatter : IEmailFormatter {
+    public class RazorEmailGenerator : IEmailGenerator {
         private readonly ITemplateService _templateService;
 
         /// <summary>
         /// Use embedded resource templates based on the specified type.
         /// </summary>
         /// <param name="templateModelType">A type that will be used to find the embedded template resources. If the type's namespace ends in ".Models", then ".Models" will be replaced with ".Templates".</param>
-        public RazorEmailFormatter(Type templateModelType) {
+        public RazorEmailGenerator(Type templateModelType) {
             string templateNamespace = templateModelType.Namespace ?? String.Empty;
             if (templateNamespace.EndsWith(".Models"))
                 templateNamespace = templateNamespace.Replace(".Models", ".Templates");
@@ -28,7 +28,7 @@ namespace RazorSharpEmail {
         /// </summary>
         /// <param name="templateAssembly">The assembly that the embedded templates are located in.</param>
         /// <param name="templateNamespace">The namespace that the embedded templates are located in.</param>
-        public RazorEmailFormatter(Assembly templateAssembly, string templateNamespace) {
+        public RazorEmailGenerator(Assembly templateAssembly, string templateNamespace) {
             _templateService = new TemplateService(new TemplateServiceConfiguration {
                 Resolver = new EmbeddedTemplateResolver(templateAssembly, templateNamespace)
             });
@@ -38,17 +38,25 @@ namespace RazorSharpEmail {
         /// Use directory based templates.
         /// </summary>
         /// <param name="directory">The directory that the templates are located in.</param>
-        public RazorEmailFormatter(string directory = null) {
+        public RazorEmailGenerator(string directory = null) {
             _templateService = new TemplateService(new TemplateServiceConfiguration {
                 Resolver = new FolderTemplateResolver(directory)
             });
         }
 
-        public MailMessage BuildMailMessageFrom<TModel>(TModel model, string templateName = null) {
-            return BuildMailMessageFrom(BuildTemplatedEmailFrom(model, templateName));
+        /// <summary>
+        /// Use a custom template service for rendering templates.
+        /// </summary>
+        /// <param name="templateService">The template service to use for resolving and rendering templates.</param>
+        public RazorEmailGenerator(ITemplateService templateService) {
+            _templateService = templateService;
         }
 
-        public TemplatedEmail BuildTemplatedEmailFrom<TModel>(TModel model, string templateName = null) {
+        public MailMessage GenerateMessage<TModel>(TModel model, string templateName = null) {
+            return GenerateMessage(Generate(model, templateName));
+        }
+
+        public TemplatedEmail Generate<TModel>(TModel model, string templateName = null) {
             var language = GetCurrentLanguage();
 
             var templatedEmail = new TemplatedEmail();
@@ -71,7 +79,7 @@ namespace RazorSharpEmail {
             return templatedEmail;
         }
 
-        public MailMessage BuildMailMessageFrom(TemplatedEmail templatedEmail) {
+        public MailMessage GenerateMessage(TemplatedEmail templatedEmail) {
             // Create the mail message and set the subject
             var mailMessage = new MailMessage { Subject = templatedEmail.Subject };
 

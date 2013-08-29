@@ -6,17 +6,17 @@ using NUnit.Framework;
 namespace RazorSharpEmail.Tests {
     [TestFixture]
     public class RazorEmailTemplatingTests {
-        private IEmailFormatter _emailFormatter;
+        private IEmailGenerator _emailGenerator;
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp() {
-            _emailFormatter = Given.AnInitializedEmailFormatter();
+            _emailGenerator = Given.AnInitializedEmailFormatter();
         }
 
         [Test]
-        public void Given_an_email_formatter_when_attempting_to_format_a_message_in_a_language_without_templates_it_should_throw() {
+        public void Should_throw_when_in_language_scope_and_cant_find_template() {
             using (new LanguageScope("pl-PL")) {
-                Assert.Throws<ArgumentException>(() => _emailFormatter.BuildTemplatedEmailFrom(new SimpleEmail()));
+                Assert.Throws<ArgumentException>(() => _emailGenerator.Generate(new Welcome()));
             }
         }
 
@@ -24,7 +24,7 @@ namespace RazorSharpEmail.Tests {
         public void Given_an_email_formatter_when_attempting_to_format_a_message_using_the_default_language_it_should_not_throw() {
             try {
                 LanguageScope.SetDefaultLanguage("en-AU");
-                _emailFormatter.BuildTemplatedEmailFrom(new SimpleEmail());
+                _emailGenerator.Generate(new Welcome());
             } finally {
                 LanguageScope.ClearDefaultLanguage();
             }
@@ -33,10 +33,9 @@ namespace RazorSharpEmail.Tests {
         [Test]
         public void Should_populate_email_model() {
             using (new LanguageScope("en-AU")) {
-                var email = _emailFormatter.BuildTemplatedEmailFrom(
-                    new SimpleEmail {
-                        RecipientFirstName = "Michael",
-                        ReferenceNumber = "REF123456",
+                var email = _emailGenerator.Generate(
+                    new Welcome {
+                        FirstName = "Michael",
                         Message = "Hello World!",
                         Url = "http://google.com"
                     });
@@ -49,12 +48,26 @@ namespace RazorSharpEmail.Tests {
         }
 
         [Test]
-        public void Can_render_from_files() {
-            var emailFormatter = new RazorEmailFormatter("Templates");
-            var email = emailFormatter.BuildTemplatedEmailFrom(
-                new SimpleEmail {
-                    RecipientFirstName = "Michael",
-                    ReferenceNumber = "REF123456",
+        public void Can_generate_by_name() {
+            var email = _emailGenerator.Generate(
+                new Welcome {
+                    FirstName = "Michael",
+                    Message = "Hello World!",
+                    Url = "http://google.com"
+                }, "Welcome");
+
+            email.Should().NotBeNull();
+            email.Subject.Should().NotBeBlank();
+            email.PlainTextBody.Should().NotBeBlank();
+            email.HtmlBody.Should().NotBeBlank();
+        }
+
+        [Test]
+        public void Can_generate_from_files() {
+            var emailGenerator = new RazorEmailGenerator("Templates");
+            var email = emailGenerator.Generate(
+                new Welcome {
+                    FirstName = "Michael",
                     Message = "Hello World!",
                     Url = "http://google.com"
                 });

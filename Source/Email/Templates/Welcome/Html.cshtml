@@ -1,0 +1,10 @@
+@using Email.Models
+@inherits RazorSharpEmail.EmailTemplate<Welcome>
+@{
+    Layout = "_Layout.Html.cshtml";
+}
+<h3>Welcome @Model.FirstName!</h3>
+<p class="lead">@Model.Message</p>
+<p>Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. consequat vel lacus. Sed iaculis pulvinar ligula, ornare fringilla ante viverra et.</p>
+
+<a class="btn" href="@Model.Url">Go To Site</a>

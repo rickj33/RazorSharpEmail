@@ -1,92 +1,132 @@
 ﻿@inherits RazorSharpEmail.EmailTemplate<object>
-
+<!-- http://zurb.com/playground/responsive-email-templates -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+        <!-- If you delete this meta tag, Half Life 3 will never be released. -->
+        <meta name="viewport" content="width=device-width" />
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        
         <title>@ViewBag.Subject</title>
+	    
 		<style type="text/css">
             @Include("style.css")
 		</style>
-	</head>
-    <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
-    	<center>
-        	<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
-            	<tr>
-                	<td align="center" valign="top">
-                    	<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
-                        	<tr>
-                            	<td align="center" valign="top">
-                                    <!-- // Begin Template Header \\ -->
-                                	<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+
+    </head>
+ 
+    <body bgcolor="#FFFFFF">
+
+        <!-- HEADER -->
+        <table class="head-wrap" bgcolor="#999999">
+            <tr>
+                <td></td>
+                <td class="header container" >
+				
+                    <div class="content">
+                        <table bgcolor="#999999">
+                            <tr>
+                                <td><img src="http://placehold.it/200x50/" /></td>
+                                <td align="right"><h6 class="collapse">Basic</h6></td>
+                            </tr>
+                        </table>
+                    </div>
+				
+                </td>
+                <td></td>
+            </tr>
+        </table><!-- /HEADER -->
+
+
+        <!-- BODY -->
+        <table class="body-wrap">
+            <tr>
+                <td></td>
+                <td class="container" bgcolor="#FFFFFF">
+
+                    <div class="content">
+                        <table>
+                            <tr>
+                                <td>
+                                    @RenderBody()
+                                    
+                                    <!-- Callout Panel -->
+                                    <p class="callout">
+                                        Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. <a href="#">Click it! &raquo;</a>
+                                    </p><!-- /Callout Panel -->					
+												
+                                    <!-- social & contact -->
+                                    <table class="social" width="100%">
                                         <tr>
-                                            <td class="headerContent">
-                                                <img src="cid:Logo" />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <!-- // End Template Header \\ -->
-                                </td>
-                            </tr>
-                        	<tr>
-                            	<td align="center" valign="top">
-                                    <!-- // Begin Template Body \\ -->
-                                	<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
-                                    	<tr>
-                                            <td valign="top" class="bodyContent">
-                                
-                                                <!-- // Begin Module: Standard Content \\ -->
-                                                <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                                            <td>
+									
+                                                <!-- column 1 -->
+                                                <table align="left" class="column">
                                                     <tr>
-                                                        <td valign="top">
-                                                            <div>
-                                                                @RenderBody()
-                                                            </div>
+                                                        <td>				
+												
+                                                            <h5 class="">Connect with Us:</h5>
+                                                            <p class=""><a href="#" class="soc-btn fb">Facebook</a> <a href="#" class="soc-btn tw">Twitter</a> <a href="#" class="soc-btn gp">Google+</a></p>
+						
+												
                                                         </td>
                                                     </tr>
-                                                </table>
-                                                <!-- // End Module: Standard Content \\ -->
-                                                
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <!-- // End Template Body \\ -->
-                                </td>
-                            </tr>
-                        	<tr>
-                            	<td align="center" valign="top">
-                                    <!-- // Begin Template Footer \\ -->
-                                	<table border="0" cellpadding="10" cellspacing="0" width="600" id="templateFooter">
-                                    	<tr>
-                                        	<td valign="top" class="footerContent">
-                                            
-                                                <!-- // Begin Module: Standard Footer \\ -->
-                                                <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                                                </table><!-- /column 1 -->	
+									
+                                                <!-- column 2 -->
+                                                <table align="left" class="column">
                                                     <tr>
-                                                        <td valign="top">
-                                                            <div>My cool footer</div>
+                                                        <td>				
+																			
+                                                            <h5 class="">Contact Info:</h5>												
+                                                            <p>Phone: <strong>408.341.0600</strong><br/>
+                                                                Email: <strong><a href="emailto:hseldon@trantor.com">hseldon@trantor.com</a></strong></p>
+                
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td valign="top">
-                                                            <img src="cid:Footer" />
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                <!-- // End Module: Standard Footer \\ -->
-                                            
+                                                </table><!-- /column 2 -->
+									
+                                                <span class="clear"></span>	
+									
                                             </td>
                                         </tr>
-                                    </table>
-                                    <!-- // End Template Footer \\ -->
+                                    </table><!-- /social & contact -->
+						
                                 </td>
                             </tr>
                         </table>
-                        <br />
-                    </td>
-                </tr>
-            </table>
-        </center>
+                    </div><!-- /content -->
+									
+                </td>
+                <td></td>
+            </tr>
+        </table><!-- /BODY -->
+
+        <!-- FOOTER -->
+        <table class="footer-wrap">
+            <tr>
+                <td></td>
+                <td class="container">
+			
+                    <!-- content -->
+                    <div class="content">
+                        <table>
+                            <tr>
+                                <td align="center">
+                                    <p>
+                                        <a href="#">Terms</a> |
+                                        <a href="#">Privacy</a> |
+                                        <a href="#"><unsubscribe>Unsubscribe</unsubscribe></a>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div><!-- /content -->
+				
+                </td>
+                <td></td>
+            </tr>
+        </table><!-- /FOOTER -->
+
     </body>
 </html>

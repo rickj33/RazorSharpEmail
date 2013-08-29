@@ -8,22 +8,21 @@ namespace RazorSharpEmail.Tests
     [UseReporter(typeof(DiffReporter))]
     public class EmailFormattingTests
     {
-        private IEmailFormatter _emailFormatter;
+        private IEmailGenerator _emailGenerator;
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            _emailFormatter = Given.AnInitializedEmailFormatter();
+            _emailGenerator = Given.AnInitializedEmailFormatter();
         }
 
         [Test]
-        public void Should_format_email_from_modal()
+        public void Should_format_email_from_model()
         {
-            var email = _emailFormatter.BuildTemplatedEmailFrom(
-                new SimpleEmail
+            var email = _emailGenerator.Generate(
+                new Welcome
                 {
-                    RecipientFirstName = "Michael",
-                    ReferenceNumber = "REF123456",
+                    FirstName = "Michael",
                     Message = "Hello World!",
                     Url = "http://google.com"
                 });
