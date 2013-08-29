@@ -52,22 +52,37 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Models\SimpleEmailModel.cs" />
+    <Compile Include="Models\SimpleEmail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="RazorTemplates\en-AU\SimpleEmail\Html.cshtml" />
-    <EmbeddedResource Include="RazorTemplates\en-AU\SimpleEmail\PlainText.cshtml" />
-    <EmbeddedResource Include="RazorTemplates\en-AU\SimpleEmail\Subject.cshtml" />
-    <EmbeddedResource Include="RazorTemplates\en-AU\_Layout.Html.cshtml" />
-    <EmbeddedResource Include="RazorTemplates\en-AU\_Layout.PlainText.cshtml" />
+    <EmbeddedResource Include="Templates\en-AU\SimpleEmail\Html.cshtml" />
+    <EmbeddedResource Include="Templates\en-AU\SimpleEmail\PlainText.cshtml" />
+    <EmbeddedResource Include="Templates\en-AU\SimpleEmail\Subject.cshtml" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Templates\SimpleEmail\Html.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SimpleEmail\PlainText.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SimpleEmail\Subject.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\_Layout.Html.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\_Layout.PlainText.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\style.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Images\Footer.png" />
     <EmbeddedResource Include="Images\Logo.png" />
-    <Content Include="Images\Readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RazorSharpEmail\RazorSharpEmail.csproj">

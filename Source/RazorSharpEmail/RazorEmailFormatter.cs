@@ -1,83 +1,92 @@
 using System;
 using System.Net.Mail;
+using System.Reflection;
 using System.Web;
+using RazorEngine.Configuration;
 using RazorEngine.Templating;
 
-namespace RazorSharpEmail
-{
-	public class RazorEmailFormatter : IEmailFormatter
-	{
-		private readonly ITemplateService _templateService;
-		private readonly IEmailTemplateInitializer _emailTemplateInitializer;
+namespace RazorSharpEmail {
+    public class RazorEmailFormatter : IEmailFormatter {
+        private readonly ITemplateService _templateService;
 
-		public RazorEmailFormatter(ITemplateService templateService, IEmailTemplateInitializer emailTemplateInitializer)
-		{
-			_templateService = templateService;
-			_emailTemplateInitializer = emailTemplateInitializer;
-		}
+        /// <summary>
+        /// Use embedded resource templates based on the specified type.
+        /// </summary>
+        /// <param name="templateModelType">A type that will be used to find the embedded template resources. If the type's namespace ends in ".Models", then ".Models" will be replaced with ".Templates".</param>
+        public RazorEmailFormatter(Type templateModelType) {
+            string templateNamespace = templateModelType.Namespace ?? String.Empty;
+            if (templateNamespace.EndsWith(".Models"))
+                templateNamespace = templateNamespace.Replace(".Models", ".Templates");
 
-		public MailMessage BuildMailMessageFrom<TModel>(TModel model)
-		{
-			return BuildMailMessageFrom(BuildTemplatedEmailFrom(model));
-		}
+            _templateService = new TemplateService(new TemplateServiceConfiguration {
+                Resolver = new EmbeddedTemplateResolver(templateModelType.Assembly, templateNamespace)
+            });
+        }
 
-		public TemplatedEmail BuildTemplatedEmailFrom<TModel>(TModel model)
-		{
-			var language = EnsureCurrentLanguageScope();
+        /// <summary>
+        /// Use embedded resource templates located in the specified assembly and namespace.
+        /// </summary>
+        /// <param name="templateAssembly">The assembly that the embedded templates are located in.</param>
+        /// <param name="templateNamespace">The namespace that the embedded templates are located in.</param>
+        public RazorEmailFormatter(Assembly templateAssembly, string templateNamespace) {
+            _templateService = new TemplateService(new TemplateServiceConfiguration {
+                Resolver = new EmbeddedTemplateResolver(templateAssembly, templateNamespace)
+            });
+        }
 
-			var templatedEmail = new TemplatedEmail();
+        /// <summary>
+        /// Use directory based templates.
+        /// </summary>
+        /// <param name="directory">The directory that the templates are located in.</param>
+        public RazorEmailFormatter(string directory = null) {
+            _templateService = new TemplateService(new TemplateServiceConfiguration {
+                Resolver = new FolderTemplateResolver(directory)
+            });
+        }
 
-			// Parse the email subject and cleanse newline characters (otherwise the email class will throw)
-			templatedEmail.Subject = HttpUtility.HtmlDecode(_templateService.Run(_emailTemplateInitializer.GetSubjectTemplateName(typeof(TModel), language), model, viewBag: null)).CleanseCRLF();
+        public MailMessage BuildMailMessageFrom<TModel>(TModel model, string templateName = null) {
+            return BuildMailMessageFrom(BuildTemplatedEmailFrom(model, templateName));
+        }
 
-			// Parse the body in both formats which will be wrapped in the layouts in a separate step
-			templatedEmail.PlainTextBody = HttpUtility.HtmlDecode(_templateService.Run(_emailTemplateInitializer.GetPlainTextTemplateName(typeof(TModel), language), model, viewBag: null));
-			templatedEmail.HtmlBody = _templateService.Run(_emailTemplateInitializer.GetHtmlTemplateName(typeof(TModel), language), model, viewBag: null);
+        public TemplatedEmail BuildTemplatedEmailFrom<TModel>(TModel model, string templateName = null) {
+            var language = GetCurrentLanguage();
 
-			return templatedEmail;
-		}
+            var templatedEmail = new TemplatedEmail();
+            if (String.IsNullOrEmpty(templateName))
+                templateName = typeof(TModel).Name;
 
-		public MailMessage BuildMailMessageFrom(TemplatedEmail templatedEmail)
-		{
-			// Create the mail message and set the subject
-			var mailMessage = new MailMessage { Subject = templatedEmail.Subject };
+            if (language.Length > 0)
+                templateName = "{0}.{1}".FormatWith(language, templateName);
 
-			// Create the plain text view
-			var plainTextAfterLayout = LayoutPlainTextContent(templatedEmail);
-			var plainTextView = AlternateView.CreateAlternateViewFromString(plainTextAfterLayout, null, "text/plain");
+            var subjectTemplate = _templateService.Resolve("{0}.Subject.cshtml".FormatWith(templateName), model);
+            var plainTextBodyTemplate = _templateService.Resolve("{0}.PlainText.cshtml".FormatWith(templateName), model);
+            var htmlBodyTemplate = _templateService.Resolve("{0}.Html.cshtml".FormatWith(templateName), model);
 
-			// Create the html view
-			var htmlTextAfterLayout = LayoutHtmlContent(templatedEmail);
-			var htmlView = AlternateView.CreateAlternateViewFromString(htmlTextAfterLayout, null, "text/html");
+            templatedEmail.Subject = HttpUtility.HtmlDecode(_templateService.Run(subjectTemplate, null)).RemoveLineFeeds();
+            dynamic viewBag = new DynamicViewBag();
+            viewBag.Subject = templatedEmail.Subject;
+            templatedEmail.PlainTextBody = HttpUtility.HtmlDecode(_templateService.Run(plainTextBodyTemplate, viewBag));
+            templatedEmail.HtmlBody = _templateService.Run(htmlBodyTemplate, viewBag);
 
-			// Add the views
-			mailMessage.AlternateViews.Add(plainTextView);
-			mailMessage.AlternateViews.Add(htmlView);
+            return templatedEmail;
+        }
 
-			return mailMessage;
-		}
+        public MailMessage BuildMailMessageFrom(TemplatedEmail templatedEmail) {
+            // Create the mail message and set the subject
+            var mailMessage = new MailMessage { Subject = templatedEmail.Subject };
 
-		private string LayoutPlainTextContent(TemplatedEmail templatedEmail)
-		{
-			var language = EnsureCurrentLanguageScope();
-			return _templateService.Run(_emailTemplateInitializer.GetPlainTextLayoutName(language), templatedEmail.PlainTextBody, viewBag: null);
-		}
+            var plainTextView = AlternateView.CreateAlternateViewFromString(templatedEmail.PlainTextBody, null, "text/plain");
+            var htmlView = AlternateView.CreateAlternateViewFromString(templatedEmail.HtmlBody, null, "text/html");
 
-		private string LayoutHtmlContent(TemplatedEmail templatedEmail)
-		{
-			var language = EnsureCurrentLanguageScope();
-			return _templateService.Run(_emailTemplateInitializer.GetHtmlLayoutName(language), templatedEmail.HtmlBody, viewBag: null);
-		}
+            // Add the views
+            mailMessage.AlternateViews.Add(plainTextView);
+            mailMessage.AlternateViews.Add(htmlView);
 
-		private static string EnsureCurrentLanguageScope()
-		{
-			if (LanguageScope.CurrentLanguage == null)
-			{
-				throw new InvalidOperationException(
-					"There is no current LanguageScope. This is required to determine the precompiled layout to use for wrapping the content of the email.");
-			}
+            return mailMessage;
+        }
 
-			return LanguageScope.CurrentLanguage;
-		}
-	}
+        private static string GetCurrentLanguage() {
+            return LanguageScope.CurrentLanguage ?? String.Empty;
+        }
+    }
 }

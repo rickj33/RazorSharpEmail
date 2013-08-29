@@ -1,0 +1,170 @@
+﻿/* Client-specific Styles */
+#outlook a{padding:0;} /* Force Outlook to provide a "view in browser" button. */
+body{width:100% !important;} .ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
+body{-webkit-text-size-adjust:none;} /* Prevent Webkit platforms from changing default text sizes. */
+
+/* Reset Styles */
+body{margin:0; padding:0;}
+img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
+table td{border-collapse:collapse;}
+#backgroundTable{height:100% !important; margin:0; padding:0; width:100% !important;}
+
+/* Template Styles */
+
+/* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: COMMON PAGE ELEMENTS /\/\/\/\/\/\/\/\/\/\ */
+
+body, #backgroundTable{
+	background-color:#F8F8F8;
+}
+
+#templateContainer{
+	border: 1px solid #DDDDDD;
+}
+
+h1, .h1{
+	color:#202020;
+	display:block;
+	font-family:Arial;
+	font-size:30px;
+	font-weight:bold;
+	line-height:100%;
+	margin-top:0;
+	margin-right:0;
+	margin-bottom:10px;
+	margin-left:0;
+	text-align:left;
+}
+
+h2, .h2{
+	color:#202020;
+	display:block;
+	font-family:Arial;
+	font-size:26px;
+	font-weight:bold;
+	line-height:100%;
+	margin-top:0;
+	margin-right:0;
+	margin-bottom:10px;
+	margin-left:0;
+	text-align:left;
+}
+
+h3, .h3{
+	color:#202020;
+	display:block;
+	font-family:Arial;
+	font-size:22px;
+	font-weight:bold;
+	line-height:100%;
+	margin-top:0;
+	margin-right:0;
+	margin-bottom:10px;
+	margin-left:0;
+	text-align:left;
+}
+
+h4, .h4{
+	color:#202020;
+	display:block;
+	font-family:Arial;
+	font-size:18px;
+	font-weight:bold;
+	line-height:100%;
+	margin-top:0;
+	margin-right:0;
+	margin-bottom:10px;
+	margin-left:0;
+	text-align:left;
+}
+
+/* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: HEADER /\/\/\/\/\/\/\/\/\/\ */
+
+#templateHeader{
+	background-color:#FFFFFF;
+	border-bottom:0;
+}
+
+.headerContent{
+	color:#202020;
+	font-family:Arial;
+	font-size:34px;
+	font-weight:bold;
+	line-height:100%;
+	padding:20px;
+	text-align:left;
+	vertical-align:middle;
+}
+
+.headerContent a:link, .headerContent a:visited, /* Yahoo! Mail Override */ .headerContent a .yshortcuts /* Yahoo! Mail Override */{
+	color:#005387;
+	font-weight:normal;
+	text-decoration:underline;
+}
+
+#headerImage{
+	height:auto;
+	max-width:600px !important;
+}
+
+/* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: MAIN BODY /\/\/\/\/\/\/\/\/\/\ */
+
+#templateContainer, .bodyContent{
+	background-color:#FFFFFF;
+}
+
+.bodyContent div{
+	color:#202020;
+	font-family:Arial;
+	font-size:14px;
+	line-height:110%;
+	text-align:left;
+}
+
+.bodyContent div a:link, .bodyContent div a:visited, /* Yahoo! Mail Override */ .bodyContent div a .yshortcuts /* Yahoo! Mail Override */{
+	color:#005387;
+	font-weight:normal;
+	text-decoration:underline;
+}
+
+.bodyContent img{
+	display:inline;
+	height:auto;
+}
+
+/* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: FOOTER /\/\/\/\/\/\/\/\/\/\ */
+
+#templateFooter{
+	background-color:#FFFFFF;
+	border-top:0;
+}
+
+.footerContent div{
+	color:#005387;
+	font-family:Arial;
+	font-size:12px;
+	line-height:125%;
+	text-align:center;
+}
+
+.footerContent div a:link, .footerContent div a:visited, /* Yahoo! Mail Override */ .footerContent div a .yshortcuts /* Yahoo! Mail Override */{
+	color:#005387;
+	font-weight:normal;
+	text-decoration:underline;
+}
+
+.footerContent img{
+	display:inline;
+}
+
+.bodyContent table.dataTable{
+    width: 100%;
+}
+
+.bodyContent table.dataTable tbody td, .bodyContent table.dataTable thead th {
+	border-collapse: collapse;
+	border: 1px solid; 
+	padding: 6px;
+	color:#202020;
+	font-family:Arial;
+	font-size: 12px;
+} 
