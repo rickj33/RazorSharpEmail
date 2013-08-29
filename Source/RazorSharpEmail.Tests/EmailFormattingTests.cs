@@ -1,5 +1,6 @@
 using ApprovalTests.Reporters;
 using Email.Models;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace RazorSharpEmail.Tests
@@ -27,6 +28,21 @@ namespace RazorSharpEmail.Tests
                     Url = "http://google.com"
                 });
             
+            ApprovalTests.Approvals.Verify(email.Everything());
+        }
+
+        [Test]
+        public void Should_inline_styles() {
+            var email = _emailGenerator.Generate(
+                new Welcome {
+                    FirstName = "Michael",
+                    Message = "Hello World!",
+                    Url = "http://google.com"
+                }, "Welcome");
+
+            var premailer = new PreMailer.Net.PreMailer();
+            email.HtmlBody = premailer.MoveCssInline(email.HtmlBody, false);
+
             ApprovalTests.Approvals.Verify(email.Everything());
         }
     }

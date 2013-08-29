@@ -1,0 +1,3 @@
+[submodule "Libs/PreMailer"]
+	path = Libs/PreMailer
+	url = https://github.com/codesmithtools/PreMailer.Net.git
