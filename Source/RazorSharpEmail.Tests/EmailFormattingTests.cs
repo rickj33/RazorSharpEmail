@@ -1,3 +1,4 @@
+using System.IO;
 using ApprovalTests.Reporters;
 using Email.Models;
 using FluentAssertions;
@@ -33,17 +34,12 @@ namespace RazorSharpEmail.Tests
 
         [Test]
         public void Should_inline_styles() {
-            var email = _emailGenerator.Generate(
-                new Welcome {
-                    FirstName = "Michael",
-                    Message = "Hello World!",
-                    Url = "http://google.com"
-                }, "Welcome");
+            var email = _emailGenerator.Generate(new object(), "Simple");
 
             var premailer = new PreMailer.Net.PreMailer();
             email.HtmlBody = premailer.MoveCssInline(email.HtmlBody, false);
 
-            ApprovalTests.Approvals.Verify(email.Everything());
+            ApprovalTests.Approvals.Verify(email.HtmlBody);
         }
     }
 }

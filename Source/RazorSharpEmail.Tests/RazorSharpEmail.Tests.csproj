@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="EmailFormattingTests.Should_format_email_from_model.approved.txt" />
+    <Content Include="EmailFormattingTests.Should_inline_styles.approved.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

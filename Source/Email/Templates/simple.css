@@ -1,0 +1,13 @@
+* {
+	margin:0;
+	padding:0;
+}
+* { font-family: sans-serif; }
+
+a { color: #2BA6CB;}
+
+.btn {
+	color: #FFF;
+	padding:10px 16px;
+	margin-right:10px;
+}
