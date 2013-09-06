@@ -31,15 +31,5 @@ namespace RazorSharpEmail.Tests
             
             ApprovalTests.Approvals.Verify(email.Everything());
         }
-
-        [Test]
-        public void Should_inline_styles() {
-            var email = _emailGenerator.Generate(new object(), "Simple");
-
-            var premailer = new PreMailer.Net.PreMailer();
-            email.HtmlBody = premailer.MoveCssInline(email.HtmlBody, false);
-
-            ApprovalTests.Approvals.Verify(email.HtmlBody);
-        }
     }
 }

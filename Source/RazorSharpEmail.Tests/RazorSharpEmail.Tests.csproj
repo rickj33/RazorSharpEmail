@@ -77,10 +77,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libs\PreMailer\PreMailer.Net\PreMailer.Net\PreMailer.Net.csproj">
-      <Project>{7b4a85fa-fa98-40fd-83b7-5e84c8853736}</Project>
-      <Name>PreMailer.Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Email\Email.csproj">
       <Project>{41f58970-bc9f-4a0d-8465-552721e9d7cb}</Project>
       <Name>Email</Name>

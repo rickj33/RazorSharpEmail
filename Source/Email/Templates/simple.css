@@ -11,3 +11,12 @@ a { color: #2BA6CB;}
 	padding:10px 16px;
 	margin-right:10px;
 }
+
+p.callout {
+	padding:15px;
+	margin-bottom: 15px;
+}
+
+p { 
+	margin-bottom: 10px; 
+}
