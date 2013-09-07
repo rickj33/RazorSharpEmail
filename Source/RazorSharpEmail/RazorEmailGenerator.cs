@@ -40,7 +40,7 @@ namespace RazorSharpEmail {
         /// <param name="directory">The directory that the templates are located in.</param>
         public RazorEmailGenerator(string directory = null) {
             _templateService = new TemplateService(new TemplateServiceConfiguration {
-                Resolver = new FolderTemplateResolver(directory)
+                Resolver = new DirectoryTemplateResolver(directory)
             });
         }
 
